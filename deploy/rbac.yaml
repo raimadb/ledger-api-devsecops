@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ledger-api-role
+  namespace: payments
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["ledger-api-config"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ledger-api-rolebinding
+  namespace: payments
+subjects:
+  - kind: ServiceAccount
+    name: ledger-api
+    namespace: payments
+roleRef:
+  kind: Role
+  name: ledger-api-role
+  apiGroup: rbac.authorization.k8s.io
+

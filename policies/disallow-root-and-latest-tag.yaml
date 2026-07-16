@@ -1,0 +1,51 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-root-and-latest-tag
+  annotations:
+    policies.kyverno.io/title: Disallow Root Containers and Latest Tag
+    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/description: >-
+      Containers must not run as root and must not use the mutable ':latest'
+      image tag. Applies to the payments namespace.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: disallow-root
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - payments
+      validate:
+        message: "Running as root is not allowed. Set securityContext.runAsNonRoot=true at the pod or container level."
+        anyPattern:
+          - spec:
+              securityContext:
+                runAsNonRoot: true
+          - spec:
+              containers:
+                - securityContext:
+                    runAsNonRoot: true
+    - name: disallow-latest-tag
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - payments
+      validate:
+        message: "Using ':latest' tag or an untagged image is not allowed. Pin to a specific version or digest."
+        foreach:
+          - list: "request.object.spec.containers"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ images.containers.*.tag }}"
+                    operator: AnyIn
+                    value: ["latest"]

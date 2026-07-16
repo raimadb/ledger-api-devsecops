@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-signed-images
+  annotations:
+    policies.kyverno.io/title: Require Signed Images
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/description: >-
+      Images deployed to the payments namespace must be signed via Cosign
+      keyless signing, verified against the GitHub Actions OIDC issuer.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+    - name: verify-image-signature
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - payments
+      verifyImages:
+        - imageReferences:
+            - "ghcr.io/YOUR_GH_USERNAME/ledger-api*"
+          attestors:
+            - entries:
+                - keyless:
+                    subject: "https://github.com/YOUR_GH_USERNAME/ledger-api-assignment/.github/workflows/*"
+                    issuer: "https://token.actions.githubusercontent.com"
