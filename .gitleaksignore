@@ -9,3 +9,10 @@
 # unmodified in deploy/insecure-baseline/ to demonstrate PSS/Kyverno rejection.
 # Never deployed. See Task 1 README "Verification Evidence" section.
 bd4ac03663e40fca69c5589410d18199224c75a4:deploy/deployment.yaml:stripe-access-token:24
+
+# Historical: fake/placeholder Stripe key format (literally containing "REDACTED")
+# used as illustrative evidence text in Task 1 README. Never a real credential.
+# Remediated in a later commit by replacing with an obviously-fake example value,
+# but the original commit remains in git history (expected — history isn't rewritten
+# for this kind of low-risk documentation artifact).
+7d280c63afcf1d1bdc925c451a5d7c8a96f8426e:README-task1.md:stripe-access-token:252
