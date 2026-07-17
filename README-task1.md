@@ -249,7 +249,7 @@ disallow-root-and-latest-tag:
 
 ```bash
 $ kubectl get secret ledger-api-secrets -n payments -o jsonpath='{.data.STRIPE_API_KEY}' | base64 -d
-sk_live_9f3a2b7c1e4d8REDACTED
+sk_live_EXAMPLE_REDACTED_FOR_DOCS
 $ kubectl get secret ledger-api-secrets -n payments -o jsonpath='{.data.DB_PASSWORD}' | base64 -d
 P@ssw0rd123
 ```

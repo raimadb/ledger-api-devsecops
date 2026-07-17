@@ -1,0 +1,11 @@
+# False positive: Sealed Secrets ciphertext is encrypted base64 data, inherently
+# high-entropy. Safe to commit — only the in-cluster Sealed Secrets controller's
+# private key can decrypt it. See deploy/sealed-secret.yaml and Task 1 README
+# "Sealed Secrets round-trip" section for verification.
+7d280c63afcf1d1bdc925c451a5d7c8a96f8426e:deploy/sealed-secret.yaml:generic-api-key:10
+7d280c63afcf1d1bdc925c451a5d7c8a96f8426e:deploy/sealed-secret.yaml:generic-api-key:11
+
+# Intentional negative-test fixture — original insecure starter manifest, kept
+# unmodified in deploy/insecure-baseline/ to demonstrate PSS/Kyverno rejection.
+# Never deployed. See Task 1 README "Verification Evidence" section.
+bd4ac03663e40fca69c5589410d18199224c75a4:deploy/deployment.yaml:stripe-access-token:24
