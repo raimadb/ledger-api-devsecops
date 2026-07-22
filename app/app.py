@@ -66,7 +66,7 @@ def fetch():
         return jsonify(error="URL not allowed"), 400
     # SSRF mitigated by is_safe_url() above: blocks non-global IPs, localhost, and
     # cloud metadata IP. See Task 1 README for live verification evidence.
-    resp = requests.get(url, timeout=5, allow_redirects=False)	# nosemgrep: python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests,python.flask.security.injection.ssrf-requests
+    resp = requests.get(url, timeout=5, allow_redirects=False)	# nosemgrep: python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests,python.flask.security.injection.ssrf-requests.ssrf-requests
     return jsonify(status_code=resp.status_code, body=resp.text[:2048])
 
 
