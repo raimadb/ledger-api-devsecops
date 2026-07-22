@@ -64,9 +64,17 @@ def fetch():
     url = request.args.get("url", "")
     if not is_safe_url(url):
         return jsonify(error="URL not allowed"), 400
+    # nosemgrep: python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests
+    # nosemgrep: python.flask.security.injection.ssrf-requests.ssrf-requests
+    # SSRF mitigated by is_safe_url() above: blocks non-global IPs, localhost, and
+    # cloud metadata IP. See Task 1 README for live verification evidence.
     resp = requests.get(url, timeout=5, allow_redirects=False)
     return jsonify(status_code=resp.status_code, body=resp.text[:2048])
 
 
 if __name__ == "__main__":
+    # nosemgrep: python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host
+    # 0.0.0.0 binding is required for container networking — the app is never
+    # exposed directly; only reachable via Kubernetes Service/Ingress, with
+    # NetworkPolicy/Istio mTLS restricting access further (see Task 3).
     app.run(host="0.0.0.0", port=8080)
