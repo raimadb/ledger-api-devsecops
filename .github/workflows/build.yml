@@ -69,3 +69,36 @@ jobs:
             --exclude-rule python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests \
             --exclude-rule python.flask.security.injection.ssrf-requests.ssrf-requests \
             app/
+  trivy-fs-scan:
+    name: Trivy (Filesystem/Dependency Scan)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: app/
+          format: sarif
+          output: trivy-fs-results.sarif
+          severity: CRITICAL,HIGH
+          exit-code: 0   # don't fail here — this run is just to produce the SARIF report
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-fs-results.sarif
+          category: trivy-fs
+
+      - name: Enforce fail policy (block on Critical/High)
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: fs
+          scan-ref: app/
+          format: table
+          severity: CRITICAL,HIGH
+          exit-code: 1
+          ignore-unfixed: false
