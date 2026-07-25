@@ -1,0 +1,23 @@
+# Documented exceptions — Debian-triaged, no upstream fix available.
+# Verified via Debian security tracker status: affected/fix_deferred/will_not_fix.
+# None of these packages are invoked by ledger-api's application code (Flask app
+# only imports os, hashlib, ipaddress, urllib.parse, requests, yaml, flask —
+# no partition/disk tooling, no perl, no zip-writing). Dormant OS-level attack
+# surface, not reachable via the exposed HTTP API. Re-review if Debian ships fixes
+# or if application dependencies change to actually invoke these libraries.
+# Reviewed: 2026-07-25
+
+CVE-2026-53615
+CVE-2026-41992
+CVE-2026-54369
+CVE-2025-69720
+CVE-2025-7458
+CVE-2026-13221
+CVE-2026-42496
+CVE-2026-57433
+CVE-2026-8376
+CVE-2026-42497
+CVE-2026-48962
+CVE-2026-57432
+CVE-2026-9538
+CVE-2023-45853

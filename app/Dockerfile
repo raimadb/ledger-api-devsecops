@@ -1,18 +1,21 @@
-# ---- Stage 1: Builder ----
-FROM python:3.11-slim-bookworm@sha256:b18992999dbe963a45a8a4da40ac2b1975be1a776d939d098c647482bcad5cba AS builder
+FROM python:3.12-slim-bookworm@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b
 
 WORKDIR /app
+
+RUN groupadd -r appgroup && useradd -r -g appgroup -u 10001 appuser
+
 COPY requirements.txt .
-RUN pip install --no-cache-dir --target=/app/deps -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# ---- Stage 2: Distroless runtime ----
-FROM gcr.io/distroless/python3-debian12:nonroot
-
-WORKDIR /app
-COPY --from=builder /app/deps /app/deps
 COPY app.py .
 
-ENV PYTHONPATH=/app/deps
+RUN chown -R appuser:appgroup /app
+
+USER 10001
+
 EXPOSE 8080
 
-CMD ["app.py"]
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')" || exit 1
+
+CMD ["python", "app.py"]
