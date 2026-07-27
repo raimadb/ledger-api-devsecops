@@ -23,9 +23,11 @@ spec:
                 - payments
       verifyImages:
         - imageReferences:
-            - "ghcr.io/YOUR_GH_USERNAME/ledger-api*"
+            - "ghcr.io/raimadb/ledger-api*"
           attestors:
             - entries:
                 - keyless:
-                    subject: "https://github.com/YOUR_GH_USERNAME/ledger-api-assignment/.github/workflows/*"
+                    subject: "https://github.com/raimadb/ledger-api-devsecops/.github/workflows/build.yml@refs/heads/main"
                     issuer: "https://token.actions.githubusercontent.com"
+                    rekor:
+                      url: https://rekor.sigstore.dev

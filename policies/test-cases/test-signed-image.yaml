@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-signed-image
+  namespace: payments
+spec:
+  securityContext:
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: test
+      image: ghcr.io/raimadb/ledger-api@sha256:cc9ca7453b92714f0dbeda8ba3d93152c13ec909fbec71ecad545d4230669cab
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]

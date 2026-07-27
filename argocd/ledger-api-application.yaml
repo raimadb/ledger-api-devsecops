@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ledger-api
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/raimadb/ledger-api-devsecops.git
+    targetRevision: main
+    path: deploy
+    directory:
+      exclude: "insecure-baseline/**"   # never sync the intentionally-vulnerable baseline
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: payments
+  syncPolicy:
+    automated:
+      prune: true       # remove resources deleted from git
+      selfHeal: true     # revert manual cluster changes back to match git — THIS is your self-heal requirement
+    syncOptions:
+      - CreateNamespace=false   # namespace already exists with PSS labels; don't let ArgoCD overwrite it
