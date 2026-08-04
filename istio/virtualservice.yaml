@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: ledger-api-vs
+  namespace: payments
+spec:
+  hosts:
+    - "ledger-api.local"
+  gateways:
+    - ledger-api-gateway
+  http:
+    - route:
+        - destination:
+            host: ledger-api
+            port:
+              number: 8080
