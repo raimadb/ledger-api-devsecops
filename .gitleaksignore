@@ -16,3 +16,10 @@ bd4ac03663e40fca69c5589410d18199224c75a4:deploy/deployment.yaml:stripe-access-to
 # but the original commit remains in git history (expected — history isn't rewritten
 # for this kind of low-risk documentation artifact).
 7d280c63afcf1d1bdc925c451a5d7c8a96f8426e:README-task1.md:stripe-access-token:252
+
+# Historical: openssl s_client output showing self-signed TLS cert subject/issuer
+# strings in Task 3 README evidence section. Not a secret — certificate subject/
+# issuer fields are public by design, presented openly in every TLS handshake.
+# Pattern-matched by generic-api-key due to "subject=..."/"issuer=..." format.
+aa244330947c274f50bda8781d84827d8980d006:README-task3.md:generic-api-key:351
+aa244330947c274f50bda8781d84827d8980d006:README-task3.md:generic-api-key:352
