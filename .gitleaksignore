@@ -23,3 +23,11 @@ bd4ac03663e40fca69c5589410d18199224c75a4:deploy/deployment.yaml:stripe-access-to
 # Pattern-matched by generic-api-key due to "subject=..."/"issuer=..." format.
 aa244330947c274f50bda8781d84827d8980d006:README-task3.md:generic-api-key:351
 aa244330947c274f50bda8781d84827d8980d006:README-task3.md:generic-api-key:352
+
+# Historical: pentest report PoC evidence showing the deterministic SHA-256-based
+# "token" from the /tokenize endpoint (Finding 3, weak tokenization). Not a real
+# secret — this is a test app running locally against synthetic data
+# (4242424242424242 is Stripe's public test card number), documenting the
+# vulnerability itself, not a credential leak.
+7c675cc343d889b9f70a5352c119f5c7f72e18a6:task4-part-b-pentest-report.md:generic-api-key:250
+7c675cc343d889b9f70a5352c119f5c7f72e18a6:task4-part-b-pentest-report.md:generic-api-key:252
